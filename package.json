@@ -5,13 +5,15 @@
   "license": "MIT",
   "scripts": {
     "build": "cargo build --release --target wasm32-unknown-unknown && wasm-bindgen --no-typescript --out-dir=public --target=web ./target/wasm32-unknown-unknown/release/sketchbook_ng.wasm",
-    "serve": "serve public",
-    "watch": "chokidar \"./src/**/*.rs\" -c \"yarn build\"",
-    "dev": "concurrently \"yarn serve\" \"yarn watch\""
+    "serve": "serve -n -s public",
+    "watch": "chokidar --initial -c \"yarn build\" -d=1000 \"./src/**/*.rs\"",
+    "dev": "concurrently \"yarn serve\" \"yarn watch\"",
+    "opt": "wasm-opt -Os ./public/sketchbook_ng_bg.wasm -o ./public/sketchbook_ng_bg.wasm"
   },
   "devDependencies": {
     "chokidar-cli": "^2.1.0",
     "concurrently": "^5.2.0",
-    "serve": "^11.3.2"
+    "serve": "^11.3.2",
+    "wasm-opt": "^1.1.1"
   }
 }

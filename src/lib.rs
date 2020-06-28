@@ -1,11 +1,3 @@
-use wasm_bindgen::prelude::*;
+mod common;
 
-#[wasm_bindgen]
-extern {
-  fn alert(s: &str);
-}
-
-#[wasm_bindgen]
-pub fn greet() {
-  alert("Hello, world!");
-}
+pub mod initial;
