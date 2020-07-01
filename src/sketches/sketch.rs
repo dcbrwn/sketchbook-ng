@@ -1,3 +1,3 @@
 pub trait Sketch {
-    fn tick(&self, dt: f64);
+    fn tick(&self, t: f64) -> ();
 }

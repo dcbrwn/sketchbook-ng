@@ -11,7 +11,7 @@ pub fn get_sketch() -> Option<Box<dyn sketch::Sketch>> {
     log(&format!("Loading sketch '{}'...", &loc));
 
     return match loc.as_str() {
-        "#initial" => Some(Box::new(initial::Initial {})),
+        "#initial" => Some(Box::new(initial::Initial::new())),
         "#plotter_example" => Some(Box::new(plotter_example::PlotterExample {})),
         _ => None
     };

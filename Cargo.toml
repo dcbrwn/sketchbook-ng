@@ -8,6 +8,7 @@ edition = "2018"
 crate-type = ["cdylib"]
 
 [dependencies]
+wee_alloc = "0.4.5"
 js-sys = "0.3.40"
 wasm-bindgen = "0.2.63"
 
@@ -15,11 +16,9 @@ wasm-bindgen = "0.2.63"
 version = "0.3.4"
 features = [
   'Document',
-  'Element',
-  'HtmlElement',
-  'Node',
   'Window',
   'Location',
+  'Performance',
   'HtmlCanvasElement',
   'CanvasRenderingContext2d',
 ]

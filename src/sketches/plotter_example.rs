@@ -5,6 +5,6 @@ pub struct PlotterExample {
 }
 
 impl Sketch for PlotterExample {
-    fn tick(&self, dt: f64) {
+    fn tick(&self, t: f64) {
     }
 }

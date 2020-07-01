@@ -8,7 +8,7 @@
     "serve": "serve -n -s public",
     "watch": "chokidar --initial -c \"yarn build\" -d=1000 \"./src/**/*.rs\"",
     "dev": "concurrently \"yarn serve\" \"yarn watch\"",
-    "opt": "wasm-opt -Os ./public/sketchbook_ng_bg.wasm -o ./public/sketchbook_ng_bg.wasm"
+    "opt": "wasm-opt -c -Os ./public/sketchbook_ng_bg.wasm -o ./public/sketchbook_ng_bg.wasm"
   },
   "devDependencies": {
     "chokidar-cli": "^2.1.0",
