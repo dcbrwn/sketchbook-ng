@@ -1,52 +1,54 @@
 use std::f64;
-use wasm_bindgen::prelude::*;
-use wasm_bindgen::JsCast;
 
-// use crate::common::log::*;
+use crate::common::log::*;
+use crate::common::dom::{get_canvas_by_id};
 use super::sketch::*;
-use crate::common::dom::{document};
+use crate::common::vec3::Vec3;
+use crate::common::plotter::{
+    Shape,
+    Primitive,
+    Plotter,
+};
 
 pub struct Initial {
-    context: web_sys::CanvasRenderingContext2d,
+    plotter: Plotter,
+    point: usize,
+    segment: usize
 }
 
 impl Initial {
     pub fn new() -> Self {
-        let canvas = document().get_element_by_id("canvas").unwrap();
-        let canvas: web_sys::HtmlCanvasElement = canvas
-            .dyn_into::<web_sys::HtmlCanvasElement>()
-            .map_err(|_| ())
-            .unwrap();
+        let mut p: Plotter = Plotter::new(get_canvas_by_id("canvas"));
 
-        let context = canvas
-            .get_context("2d")
-            .unwrap()
-            .unwrap()
-            .dyn_into::<web_sys::CanvasRenderingContext2d>()
-            .unwrap();
+        let point = p.add_primitive(Primitive {
+            shape: Shape::Point(Vec3::from_values(100.0, 100.0, 1.0)),
+            z_index: 2,
+            color: Vec3::from_values(0.0, 0.5, 0.0),
+        });
 
-        Initial {
-            context: context,
-        }
+        let segment = p.add_primitive(Primitive {
+            shape: Shape::Segment(
+                Vec3::from_values(100.0, 100.0, 1.0),
+                Vec3::from_values(0.0, 0.0, 1.0)
+            ),
+            z_index: 1,
+            color: Vec3::from_values(1.0, 0.0, 0.0),
+        });
+
+        log(&format!("Plotter {:?}", p));
+
+        let result: Initial = Initial {
+            plotter: p,
+            point: point,
+            segment: segment,
+        };
+
+        return result
     }
 }
 
 impl Sketch for Initial {
-    fn tick(&self, t: f64) {
-        let context = &self.context;
-
-        context.set_fill_style(&JsValue::from("white"));
-
-        context.fill_rect(0.0, 0.0, 1000.0, 1000.0);
-        context.begin_path();
-
-        let x = f64::cos(t * f64::consts::PI * 2.0) * 50.0;
-        let y = f64::sin(t * f64::consts::PI * 2.0) * 50.0;
-
-        context
-            .arc(90.0 + x, 65.0 + y, 5.0, 0.0, f64::consts::PI * 2.0)
-            .unwrap();
-
-        context.stroke();
+    fn tick(&self, _t: f64) {
+        &self.plotter.render();
     }
 }

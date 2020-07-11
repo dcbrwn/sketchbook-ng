@@ -16,3 +16,12 @@ pub fn document() -> web_sys::Document {
         .document()
         .expect("should have a document on window")
 }
+
+pub fn get_canvas_by_id(id: &str) -> web_sys::HtmlCanvasElement {
+    let canvas = document().get_element_by_id(id).unwrap();
+
+    canvas
+        .dyn_into::<web_sys::HtmlCanvasElement>()
+        .map_err(|_| ())
+        .unwrap()
+}
