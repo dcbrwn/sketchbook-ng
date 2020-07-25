@@ -1,17 +1,45 @@
-use crate::common::dom::*;
-use crate::common::log::*;
+use std::borrow::BorrowMut;
+use std::cell::{RefCell, RefMut};
 
-pub mod colors;
+use crate::common::log::*;
+use crate::sketches::initial::Initial;
+use crate::sketches::sketch::{
+    EventTarget,
+    PointerEventData,
+    SketchEvent,
+    TickEventData,
+    WheelEventData
+};
+
+mod colors;
 pub mod sketch;
 pub mod initial;
 
-pub fn get_sketch() -> Option<Box<dyn sketch::Sketch>> {
-    let loc = window().location().hash().unwrap();
+pub struct Sketchbook {
+    current_sketch: Option<RefCell<Box<dyn EventTarget>>>,
+}
 
-    log(&format!("Loading sketch '{}'...", &loc));
+impl Sketchbook {
+    pub fn new() -> Self {
+        Sketchbook {
+            current_sketch: None,
+        }
+    }
 
-    return match loc.as_str() {
-        "#initial" => Some(Box::new(initial::Initial::new())),
-        _ => None
-    };
+    pub fn load_sketch(&mut self, args: String, canvas: web_sys::HtmlCanvasElement) -> () {
+        log(&format!("Loading sketch '{}'...", &args));
+
+        self.current_sketch = match args.as_str() {
+            "#initial" => Some(RefCell::new(Box::new(initial::Initial::new(canvas)))),
+            _ => None
+        };
+    }
+}
+
+impl EventTarget for Sketchbook {
+    fn dispatch(&mut self, event: SketchEvent) -> () {
+        if let Some(sketch) = &self.current_sketch {
+            sketch.borrow_mut().dispatch(event);
+        }
+    }
 }

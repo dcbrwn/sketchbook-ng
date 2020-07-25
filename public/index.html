@@ -9,36 +9,61 @@
 <body>
   <canvas id="canvas"></canvas>
   <script type="module">
-    import init from "./sketchbook_ng.js";
+    import init, {
+      on_load,
+      on_pointer_down,
+      on_pointer_up,
+      on_pointer_move,
+      on_resize,
+      on_tick,
+      on_wheel,
+    } from "./sketchbook_ng.js";
 
     main();
 
-    let module;
+    async function main() {
+      await init();
+      initDOM();
+    }
 
     function initDOM() {
       const canvas = document.getElementById("canvas");
 
       function updateCanvasDimensions() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        on_resize(width, height);
       }
 
       window.addEventListener("resize", () => {
         updateCanvasDimensions();
       });
 
-      updateCanvasDimensions();
-    }
+      document.addEventListener("pointerdown", (event) => {
+        on_pointer_down(event.button, event.pageX, event.pageY);
+      });
 
-    function tick() {
-      module.tick(performance.now() / 1000.0);
+      document.addEventListener("pointerup", (event) => {
+        on_pointer_up(event.button, event.pageX, event.pageY);
+      });
+
+      document.addEventListener("pointermove", (event) => {
+        on_pointer_move(event.button, event.pageX, event.pageY);
+      });
+
+      document.addEventListener("wheel", (event) => {
+        on_wheel(event.deltaX, event.deltaY, event.pageX, event.pageY);
+      });
+
+      on_load(window.location.hash, canvas);
+
+      updateCanvasDimensions();
+
       requestAnimationFrame(tick);
     }
 
-    async function main() {
-      initDOM();
-      module = await init();
-
+    function tick() {
+      on_tick(performance.now() / 1000.0);
       requestAnimationFrame(tick);
     }
   </script>

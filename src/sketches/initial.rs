@@ -1,16 +1,25 @@
 use std::f64;
 
 use crate::common::log::*;
-use crate::common::dom::{get_canvas_by_id};
-use super::sketch::*;
-use crate::common::vec3::Vec3;
 use crate::common::plotter::{
-    Shape,
-    Primitive,
     Plotter,
+    Primitive,
+    Shape,
 };
+use crate::common::vec3::Vec3;
+use crate::sketches::sketch::{
+    PointerEventData,
+    SketchEvent,
+    TickEventData
+};
+use crate::sketches::sketch::SketchEvent::{
+    PointerDown,
+    Tick,
+};
+use crate::vec3;
 
 use super::colors::*;
+use super::sketch::EventTarget;
 
 pub struct Initial {
     plotter: Plotter,
@@ -19,21 +28,21 @@ pub struct Initial {
 }
 
 impl Initial {
-    pub fn new() -> Self {
-        let mut p: Plotter = Plotter::new(get_canvas_by_id("canvas"));
-
-        p.set_transform(
-            p.get_transform()
-                .translate(&Vec3 { x: 100.0, y: 100.0, z: 1.0 })
-                .rotate(f64::consts::PI / 4.0)
-        );
+    pub fn new(canvas: web_sys::HtmlCanvasElement) -> Self {
+        let mut p: Plotter = Plotter::new(canvas);
 
         p.set_clear_color(&PAPER);
 
         p.add_primitive(Primitive {
-            shape: Shape::Grid(100.0),
+            shape: Shape::Grid(50.0),
             z_index: 0,
             color: LIGHT_BLUE_INK.as_rgb_string().into(),
+        });
+
+        p.add_primitive(Primitive {
+            shape: Shape::Grid(250.0),
+            z_index: 1,
+            color: BLUE_INK.as_rgb_string().into(),
         });
 
         // p.set_transform(p.get_transform().translate(&Vec3 { x: 10.0, y: 20.0, z: 1.0 }));
@@ -54,24 +63,42 @@ impl Initial {
 
         let result: Initial = Initial {
             plotter: p,
-            point: point,
-            segment: segment,
+            point,
+            segment,
         };
 
         return result
     }
-}
 
-impl Sketch for Initial {
-    fn tick(&mut self, t: f64) {
+    fn on_tick(&mut self, data: TickEventData) {
         self.plotter.update_canvas_size();
 
         let point = self.plotter.get_mut(self.point);
 
         if let Shape::Point(ref mut pos) = point.shape {
-            (*pos).x = 100.0 + f64::sin(t) * 100.0;
+            (*pos).x = 100.0 + f64::sin(data.time) * 100.0;
         }
 
         self.plotter.render();
+    }
+
+    fn on_pointer_down(&mut self, data: PointerEventData) {
+        let p = self.plotter.project_to_canvas(&vec3!(data.x, data.y, 1.0));
+
+        self.plotter.add_primitive(Primitive {
+            shape: Shape::Point(p),
+            z_index: 2,
+            color: RED.as_rgb_string().into(),
+        });
+    }
+}
+
+impl EventTarget for Initial {
+    fn dispatch(&mut self, event: SketchEvent) {
+        match event {
+            Tick(data) => self.on_tick(data),
+            PointerDown(data) => self.on_pointer_down(data),
+            _ => ()
+        }
     }
 }
