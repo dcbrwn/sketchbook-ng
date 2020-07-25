@@ -9,7 +9,7 @@ use wasm_bindgen::prelude::*;
 
 use sketches::Sketchbook;
 
-use crate::sketches::sketch::{
+use crate::sketches::events::{
     PointerEventData,
     EventTarget,
     TickEventData,
@@ -17,7 +17,7 @@ use crate::sketches::sketch::{
     WindowResizeData,
     SketchEvent
 };
-use crate::sketches::sketch::SketchEvent::{
+use crate::sketches::events::SketchEvent::{
     PointerDown,
     PointerMove,
     PointerUp,

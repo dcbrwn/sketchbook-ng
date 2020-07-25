@@ -1,5 +1,3 @@
-use crate::common::vec3::Vec3;
-
 pub struct TickEventData {
     pub time: f64,
 }

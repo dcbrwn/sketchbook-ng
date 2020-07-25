@@ -7,19 +7,19 @@ use crate::common::plotter::{
     Shape,
 };
 use crate::common::vec3::Vec3;
-use crate::sketches::sketch::{
+use crate::sketches::events::{
     PointerEventData,
     SketchEvent,
     TickEventData
 };
-use crate::sketches::sketch::SketchEvent::{
+use crate::sketches::events::SketchEvent::{
     PointerDown,
     Tick,
 };
 use crate::vec3;
 
 use super::colors::*;
-use super::sketch::EventTarget;
+use super::events::EventTarget;
 
 pub struct Initial {
     plotter: Plotter,

@@ -2,21 +2,18 @@ use std::borrow::BorrowMut;
 use std::cell::{RefCell, RefMut};
 
 use crate::common::log::*;
-use crate::sketches::initial::Initial;
-use crate::sketches::sketch::{
+use crate::sketches::events::{
     EventTarget,
-    PointerEventData,
     SketchEvent,
-    TickEventData,
-    WheelEventData
 };
+use crate::sketches::initial::Initial;
 
 mod colors;
-pub mod sketch;
+pub mod events;
 pub mod initial;
 
 pub struct Sketchbook {
-    current_sketch: Option<RefCell<Box<dyn EventTarget>>>,
+    current_sketch: Option<Box<dyn EventTarget>>,
 }
 
 impl Sketchbook {
@@ -30,7 +27,7 @@ impl Sketchbook {
         log(&format!("Loading sketch '{}'...", &args));
 
         self.current_sketch = match args.as_str() {
-            "#initial" => Some(RefCell::new(Box::new(initial::Initial::new(canvas)))),
+            "#initial" => Some(Box::new(initial::Initial::new(canvas))),
             _ => None
         };
     }
@@ -38,8 +35,8 @@ impl Sketchbook {
 
 impl EventTarget for Sketchbook {
     fn dispatch(&mut self, event: SketchEvent) -> () {
-        if let Some(sketch) = &self.current_sketch {
-            sketch.borrow_mut().dispatch(event);
+        if let Some(sketch) = &mut self.current_sketch {
+            sketch.dispatch(event);
         }
     }
 }
