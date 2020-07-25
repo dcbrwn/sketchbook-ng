@@ -7,7 +7,7 @@ pub enum MouseButton {
 }
 
 pub trait Sketch {
-    fn tick(&self, t: f64) -> () {}
+    fn tick(&mut self, t: f64) -> () {}
     fn on_click(&self, position: Vec3, button: MouseButton) -> () {}
     fn on_move(&self, p0: Vec3, p1: Vec3, button: MouseButton) -> () {}
 }

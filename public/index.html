@@ -17,8 +17,8 @@
       const canvas = document.getElementById("canvas");
 
       function updateCanvasDimensions() {
-        canvas.width = document.body.offsetWidth;
-        canvas.height = document.body.offsetHeight;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
       }
 
       window.addEventListener("resize", () => {

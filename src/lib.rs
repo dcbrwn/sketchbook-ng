@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 mod common;
 mod sketches;
 
@@ -22,7 +24,7 @@ pub fn main() {
     let f = Rc::new(RefCell::new(None));
     let g = f.clone();
 
-    let sketch = get_sketch().unwrap();
+    let mut sketch = get_sketch().unwrap();
 
     *g.borrow_mut() = Some(Closure::wrap(Box::new(move || {
         let t = performance.now() / 1000.0;

@@ -1,6 +1,7 @@
 use crate::common::dom::*;
 use crate::common::log::*;
 
+mod colors;
 mod sketch;
 mod initial;
 

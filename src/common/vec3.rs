@@ -1,6 +1,7 @@
 use std::fmt;
 use std::ops;
 use std::cmp::{Eq};
+use super::utils::align;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Vec3 {
@@ -24,6 +25,14 @@ impl Vec3 {
         let b: u8 = (self.z * 255.0) as u8;
         (&format!("rgb({}, {}, {})", r, g, b)).into()
     }
+
+    pub fn align(&self, step: f64) -> Self {
+        Vec3 {
+            x: align(self.x, step),
+            y: align(self.y, step),
+            z: align(self.z, step),
+        }
+    }
 }
 
 impl Eq for Vec3 {
@@ -42,6 +51,19 @@ impl<'a> ops::Add<&'a Vec3> for &'a Vec3 {
     }
 }
 
+
+impl<'a> ops::Sub<&'a Vec3> for &'a Vec3 {
+    type Output = Vec3;
+
+    fn sub(self, rhs: &'a Vec3) -> Vec3 {
+        Vec3 {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.y - rhs.z,
+        }
+    }
+}
+
 impl<'a> ops::Add<f64> for &'a Vec3 {
     type Output = Vec3;
 
@@ -54,8 +76,27 @@ impl<'a> ops::Add<f64> for &'a Vec3 {
     }
 }
 
+impl<'a> ops::Mul<f64> for &'a Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: f64) -> Vec3 {
+        Vec3 {
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
+        }
+    }
+}
+
 impl fmt::Display for Vec3 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "({}, {}, {})", self.x, self.y, self.z)
     }
+}
+
+#[macro_export]
+macro_rules! vec3 {
+    ($x:expr, $y:expr, $z:expr) => {
+        Vec3 { x: $x, y: $y, z: $z }
+    };
 }
