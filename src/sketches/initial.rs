@@ -31,6 +31,12 @@ impl Initial {
     pub fn new(canvas: web_sys::HtmlCanvasElement) -> Self {
         let mut p: Plotter = Plotter::new(canvas);
 
+        p.set_transform(
+            p.get_transform()
+                .translate(&vec3!(120.0, 130.0, 1.0))
+                .rotate(f64::consts::PI / 2.5)
+        );
+
         p.set_clear_color(&PAPER);
 
         p.add_primitive(Primitive {

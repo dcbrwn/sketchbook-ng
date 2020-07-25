@@ -176,7 +176,7 @@ impl Plotter {
             x: self.canvas_size.0 / 2.0, y: self.canvas_size.1 / 2.0, z: 1.0
         }).align(step);
 
-        const OVERSCAN_FACTOR: f64 = 1.5;
+        const OVERSCAN_FACTOR: f64 = 2.0;
         let r = f64::sqrt(o.x * o.x + o.y * o.y);
         let steps = (r * OVERSCAN_FACTOR / step).floor() as i32;
 
