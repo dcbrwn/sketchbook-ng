@@ -31,7 +31,7 @@ impl Initial {
         p.set_clear_color(&PAPER);
 
         p.add_primitive(Primitive {
-            shape: Shape::Grid(50.0),
+            shape: Shape::Grid(100.0),
             z_index: 0,
             color: LIGHT_BLUE_INK.as_rgb_string().into(),
         });
@@ -51,8 +51,6 @@ impl Initial {
             z_index: 1,
             color: GREEN.as_rgb_string().into(),
         });
-
-        log(&format!("Plotter {:?}", p));
 
         let result: Initial = Initial {
             plotter: p,

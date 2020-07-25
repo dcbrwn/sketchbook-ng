@@ -3,7 +3,7 @@ use std::ops;
 use std::cmp::{Eq};
 use super::utils::align;
 
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Copy, Clone, PartialEq)]
 pub struct Vec3 {
     pub x: f64,
     pub y: f64,

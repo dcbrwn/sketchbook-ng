@@ -1,9 +1,9 @@
 use crate::common::dom::*;
 use crate::common::log::*;
 
-mod colors;
-mod sketch;
-mod initial;
+pub mod colors;
+pub mod sketch;
+pub mod initial;
 
 pub fn get_sketch() -> Option<Box<dyn sketch::Sketch>> {
     let loc = window().location().hash().unwrap();

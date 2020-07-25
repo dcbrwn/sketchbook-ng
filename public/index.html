@@ -13,6 +13,8 @@
 
     main();
 
+    let module;
+
     function initDOM() {
       const canvas = document.getElementById("canvas");
 
@@ -28,9 +30,16 @@
       updateCanvasDimensions();
     }
 
+    function tick() {
+      module.tick(performance.now() / 1000.0);
+      requestAnimationFrame(tick);
+    }
+
     async function main() {
       initDOM();
-      await init();
+      module = await init();
+
+      requestAnimationFrame(tick);
     }
   </script>
 </body>

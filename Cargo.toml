@@ -18,7 +18,6 @@ features = [
   'Document',
   'Window',
   'Location',
-  'Performance',
   'HtmlCanvasElement',
   'CanvasRenderingContext2d',
 ]

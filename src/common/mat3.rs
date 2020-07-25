@@ -1,7 +1,7 @@
 use std::ops;
 use super::vec3::Vec3;
 
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Clone)]
 pub struct Mat3 {
     pub m11: f64, pub m12: f64, pub m13: f64,
     pub m21: f64, pub m22: f64, pub m23: f64,

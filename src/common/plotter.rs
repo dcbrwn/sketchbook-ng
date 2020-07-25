@@ -7,7 +7,7 @@ use super::log::log;
 use super::mat3::Mat3;
 use super::vec3::Vec3;
 
-#[derive(Debug, PartialEq)]
+#[derive(PartialEq)]
 pub enum Shape {
     Point(Vec3),
     Segment(Vec3, Vec3),
@@ -15,14 +15,13 @@ pub enum Shape {
     Grid(f64),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(PartialEq)]
 pub struct Primitive {
     pub shape: Shape,
     pub z_index: i32,
     pub color: JsValue,
 }
 
-#[derive(Debug)]
 pub struct Plotter {
     canvas: HtmlCanvasElement,
     canvas_size: (f64, f64),
