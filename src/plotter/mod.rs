@@ -3,9 +3,9 @@ use wasm_bindgen::{JsCast, JsValue};
 use web_sys::CanvasRenderingContext2d;
 use web_sys::HtmlCanvasElement;
 
-use super::log::log;
-use super::mat3::Mat3;
-use super::vec3::Vec3;
+use crate::interop::log::*;
+use crate::math::mat3::Mat3;
+use crate::math::vec3::Vec3;
 
 #[derive(PartialEq)]
 pub enum Shape {

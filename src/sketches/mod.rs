@@ -1,15 +1,9 @@
 use std::borrow::BorrowMut;
 use std::cell::{RefCell, RefMut};
 
-use crate::common::log::*;
-use crate::sketches::events::{
-    EventTarget,
-    SketchEvent,
-};
-use crate::sketches::initial::Initial;
+use crate::interop::events::*;
+use crate::interop::log::*;
 
-mod colors;
-pub mod events;
 pub mod initial;
 
 pub struct Sketchbook {

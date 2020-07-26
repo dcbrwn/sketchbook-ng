@@ -7,26 +7,14 @@ use std::cell::RefCell;
 use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::*;
 
+use interop::events::*;
+use interop::events::SketchEvent::*;
 use sketches::Sketchbook;
 
-use crate::sketches::events::{
-    PointerEventData,
-    EventTarget,
-    TickEventData,
-    WheelEventData,
-    WindowResizeData,
-    SketchEvent
-};
-use crate::sketches::events::SketchEvent::{
-    PointerDown,
-    PointerMove,
-    PointerUp,
-    Tick,
-    Wheel,
-    WindowResize
-};
-
 mod common;
+mod interop;
+mod math;
+mod plotter;
 mod sketches;
 
 // Use `wee_alloc` as the global allocator.

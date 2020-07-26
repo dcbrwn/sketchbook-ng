@@ -1,4 +1,4 @@
-use crate::common::vec3::{ Vec3 };
+use crate::math::vec3::{ Vec3 };
 use crate::{ vec3 };
 
 pub const RED: Vec3 = vec3!(0.9, 0.1, 0.0);

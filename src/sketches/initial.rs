@@ -1,25 +1,17 @@
 use std::f64;
 
-use crate::common::log::*;
-use crate::common::plotter::{
+use crate::interop::log::*;
+use crate::plotter::{
     Plotter,
     Primitive,
     Shape,
 };
-use crate::common::vec3::Vec3;
-use crate::sketches::events::{
-    PointerEventData,
-    SketchEvent,
-    TickEventData
-};
-use crate::sketches::events::SketchEvent::{
-    PointerDown,
-    Tick,
-};
+use crate::math::vec3::Vec3;
+use crate::interop::events::*;
+use crate::interop::events::SketchEvent::*;
 use crate::vec3;
 
-use super::colors::*;
-use super::events::EventTarget;
+use crate::common::colors::*;
 
 pub struct Initial {
     plotter: Plotter,
