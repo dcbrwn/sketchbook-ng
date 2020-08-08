@@ -8,7 +8,7 @@ use crate::plotter::{
 };
 use crate::math::vec3::Vec3;
 use crate::interop::events::*;
-use crate::interop::events::SketchEvent::*;
+use crate::interop::events::GlobalEvent::*;
 use crate::vec3;
 
 use crate::common::colors::*;
@@ -68,7 +68,7 @@ impl Initial {
         return result
     }
 
-    fn on_tick(&mut self, data: TickEventData) {
+    fn on_tick(&mut self, data: &TickEventData) {
         self.plotter.update_canvas_size();
 
         let point = self.plotter.get_mut(self.point);
@@ -80,7 +80,7 @@ impl Initial {
         self.plotter.render();
     }
 
-    fn on_pointer_down(&mut self, data: PointerEventData) {
+    fn on_pointer_down(&mut self, data: &PointerEventData) {
         let p = self.plotter.project_to_canvas(&vec3!(data.x, data.y, 1.0));
 
         self.plotter.add_primitive(Primitive {
@@ -91,11 +91,11 @@ impl Initial {
     }
 }
 
-impl EventTarget for Initial {
-    fn dispatch(&mut self, event: SketchEvent) {
+impl EventListener for Initial {
+    fn dispatch(&mut self, event: &GlobalEvent) {
         match event {
-            Tick(data) => self.on_tick(data),
-            PointerDown(data) => self.on_pointer_down(data),
+            Tick(ref data) => self.on_tick(data),
+            PointerDown(ref data) => self.on_pointer_down(data),
             _ => ()
         }
     }

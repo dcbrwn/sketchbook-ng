@@ -6,31 +6,23 @@ use crate::interop::log::*;
 
 pub mod initial;
 
-pub struct Sketchbook {
-    current_sketch: Option<Box<dyn EventTarget>>,
-}
+pub struct Sketchbook {}
 
 impl Sketchbook {
     pub fn new() -> Self {
-        Sketchbook {
-            current_sketch: None,
-        }
+        Sketchbook {}
     }
 
     pub fn load_sketch(&mut self, args: String, canvas: web_sys::HtmlCanvasElement) -> () {
         log(&format!("Loading sketch '{}'...", &args));
 
-        self.current_sketch = match args.as_str() {
-            "#initial" => Some(Box::new(initial::Initial::new(canvas))),
+        let sketch = match args.as_str() {
+            "#initial" => Some(initial::Initial::new(canvas)),
             _ => None
         };
-    }
-}
 
-impl EventTarget for Sketchbook {
-    fn dispatch(&mut self, event: SketchEvent) -> () {
-        if let Some(sketch) = &mut self.current_sketch {
-            sketch.dispatch(event);
+        if let Some(sketch) = sketch {
+            attach_global_listener(Box::new(sketch));
         }
     }
 }

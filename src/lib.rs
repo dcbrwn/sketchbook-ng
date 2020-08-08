@@ -8,7 +8,7 @@ use wasm_bindgen::JsCast;
 use wasm_bindgen::prelude::*;
 
 use interop::events::*;
-use interop::events::SketchEvent::*;
+use interop::events::GlobalEvent::*;
 use sketches::Sketchbook;
 
 mod common;
@@ -25,12 +25,6 @@ thread_local! {
     pub static BOOK: RefCell<Sketchbook> = RefCell::new(Sketchbook::new());
 }
 
-fn dispatch(event: SketchEvent) -> () {
-    BOOK.with(|book| {
-        book.borrow_mut().dispatch(event);
-    })
-}
-
 #[wasm_bindgen]
 pub fn on_load(args: Option<String>, canvas: web_sys::HtmlCanvasElement) -> () {
     if let Some(actual_args) = args {
@@ -42,30 +36,30 @@ pub fn on_load(args: Option<String>, canvas: web_sys::HtmlCanvasElement) -> () {
 
 #[wasm_bindgen]
 pub fn on_tick(time: f64) -> () {
-    dispatch(Tick(TickEventData { time }));
+    dispatch_global_event(Tick(TickEventData { time }));
 }
 
 #[wasm_bindgen]
 pub fn on_resize(width: f64, height: f64) -> () {
-    dispatch(WindowResize(WindowResizeData { width, height }));
+    dispatch_global_event(WindowResize(WindowResizeData { width, height }));
 }
 
 #[wasm_bindgen]
 pub fn on_pointer_down(button: i8, x: f64, y: f64) -> () {
-    dispatch(PointerDown(PointerEventData { button, x, y }));
+    dispatch_global_event(PointerDown(PointerEventData { button, x, y }));
 }
 
 #[wasm_bindgen]
 pub fn on_pointer_move(button: i8, x: f64, y: f64) -> () {
-    dispatch(PointerMove(PointerEventData { button, x, y }));
+    dispatch_global_event(PointerMove(PointerEventData { button, x, y }));
 }
 
 #[wasm_bindgen]
 pub fn on_pointer_up(button: i8, x: f64, y: f64) -> () {
-    dispatch(PointerUp(PointerEventData { button, x, y }));
+    dispatch_global_event(PointerUp(PointerEventData { button, x, y }));
 }
 
 #[wasm_bindgen]
 pub fn on_wheel(dx: f64, dy: f64, px: f64, py: f64) -> () {
-    dispatch(Wheel(WheelEventData { dx, dy, px, py }));
+    dispatch_global_event(Wheel(WheelEventData { dx, dy, px, py }));
 }
